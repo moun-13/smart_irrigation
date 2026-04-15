@@ -41,3 +41,9 @@ To make the model accessible and usable in a real-world application, we integrat
 <br><br><br><br>
 
 <img width="950" height="714" src="https://github.com/user-attachments/assets/8fdad36a-36f4-42b4-8607-5a45feae6e1b" />
+
+<br><br>
+<img width="980" height="733" alt="Screenshot 2026-04-15 112907" src="https://github.com/user-attachments/assets/e5a38823-78c3-41fe-9263-0efc35b79d88" />
+
+
+
