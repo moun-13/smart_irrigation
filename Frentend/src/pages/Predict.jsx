@@ -1,39 +1,45 @@
 import React, { useState } from 'react';
 import PredictionForm from '../components/PredictionForm';
 import ResultCard from '../components/ResultCard';
+import { api } from '../services/api';
+import { useAuth } from '../context/useAuth';
 
 const Predict = () => {
   const [isPredicting, setIsPredicting] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
+  const { token } = useAuth();
 
-  const handlePredict = (data) => {
+  const handlePredict = async (data) => {
     setIsPredicting(true);
     setResult(null);
+    setError('');
 
-    // Simulate ML API call with a realistic delay
-    setTimeout(() => {
-      // Dummy logic for calculating stress score based on input values
-      const temp = parseFloat(data.temperature);
-      const rain = parseFloat(data.rainfall);
-      const moisture = parseFloat(data.soilMoisture);
-
-      // Higher temp, lower rain, lower moisture = higher stress
-      let score = (temp * 2) - (rain * 1.5) + ((100 - moisture) * 0.8);
-      
-      // Clamp between 0 and 100
-      score = Math.max(0, Math.min(100, score));
-      
-      let level = 'low';
-      if (score >= 70) level = 'high';
-      else if (score >= 40) level = 'medium';
-
+    try {
+      const payload = {
+        temperature: parseFloat(data.temperature),
+        rainfall: parseFloat(data.rainfall),
+        soil_moisture: parseFloat(data.soilMoisture),
+        crop_type: data.cropType,
+      };
+      const prediction = await api.predict(token, payload);
       setResult({
-        score,
-        level,
-        timestamp: new Date().toISOString()
+        score: prediction.water_stress,
+        level: prediction.level,
+        recommendedWater: prediction.recommended_water_l_m2,
+        frequencyDays: prediction.irrigation_frequency_days,
+        explanation: prediction.explanation,
+        timestamp: prediction.timestamp,
       });
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setIsPredicting(false);
-    }, 1500);
+    }
+  };
+
+  const handleRepredict = () => {
+    setResult(null);
   };
 
   return (
@@ -47,8 +53,11 @@ const Predict = () => {
         </div>
 
         <PredictionForm onSubmit={handlePredict} isPredicting={isPredicting} />
+        {error && (
+          <p className="mt-6 text-center text-red-500 font-medium">{error}</p>
+        )}
         
-        {result && <ResultCard result={result} />}
+        {result && <ResultCard result={result} onRepredict={handleRepredict} />}
         
       </div>
     </div>

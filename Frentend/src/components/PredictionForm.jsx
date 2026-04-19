@@ -27,6 +27,15 @@ const PredictionForm = ({ onSubmit, isPredicting }) => {
     onSubmit(formData);
   };
 
+  const handleClear = () => {
+    setFormData({
+      temperature: '',
+      rainfall: '',
+      soilMoisture: '',
+      cropType: ''
+    });
+  };
+
   return (
     <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-green to-brand-blue"></div>
@@ -75,20 +84,31 @@ const PredictionForm = ({ onSubmit, isPredicting }) => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={isPredicting}
-          className="w-full mt-8 py-4 rounded-xl font-bold text-white bg-brand-green hover:bg-brand-green-dark transition-all duration-300 shadow-md shadow-brand-green/20 flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
-        >
-          {isPredicting ? (
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
-              Analyzing Data...
-            </span>
-          ) : (
-            'Predict Water Stress'
-          )}
-        </button>
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="submit"
+            disabled={isPredicting}
+            className="py-4 rounded-xl font-bold text-white bg-brand-green hover:bg-brand-green-dark transition-all duration-300 shadow-md shadow-brand-green/20 flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
+          >
+            {isPredicting ? (
+              <span className="flex items-center gap-2">
+                <span className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
+                Analyzing Data...
+              </span>
+            ) : (
+              'Predict Water Stress'
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleClear}
+            disabled={isPredicting}
+            className="py-4 rounded-xl font-bold text-brand-dark bg-gray-100 hover:bg-gray-200 transition-all duration-300 disabled:opacity-75 disabled:cursor-not-allowed"
+          >
+            Clear Fields
+          </button>
+        </div>
       </form>
     </div>
   );

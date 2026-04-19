@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Droplet, Sprout, BarChart3, ArrowRight } from 'lucide-react';
+import { useAuth } from '../context/useAuth';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="flex flex-col flex-grow">
@@ -30,17 +32,17 @@ const Home = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button 
-              onClick={() => navigate('/predict')}
+              onClick={() => navigate(isAuthenticated ? '/predict' : '/signup')}
               className="group px-8 py-4 text-lg font-semibold rounded-2xl bg-brand-green hover:bg-brand-green-dark text-white shadow-lg shadow-brand-green/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
             >
-              Start Prediction
+              {isAuthenticated ? 'Start Prediction' : 'Create Account'}
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button 
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(isAuthenticated ? '/dashboard' : '/login')}
               className="px-8 py-4 text-lg font-semibold rounded-2xl bg-white text-brand-dark border-2 border-gray-100 hover:border-brand-blue/30 hover:bg-brand-blue/5 transition-all duration-300"
             >
-              View Dashboard
+              {isAuthenticated ? 'View Dashboard' : 'Login'}
             </button>
           </div>
         </div>

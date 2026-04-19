@@ -1,10 +1,10 @@
 import React from 'react';
 import { AlertTriangle, Info, CheckCircle, Activity } from 'lucide-react';
 
-const ResultCard = ({ result }) => {
+const ResultCard = ({ result, onRepredict }) => {
   if (!result) return null;
 
-  const { score, level } = result;
+  const { score, level, recommendedWater, frequencyDays, explanation } = result;
 
   // Visual cues based on stress level
   const statusConfig = {
@@ -76,7 +76,7 @@ const ResultCard = ({ result }) => {
             AI Analysis Complete
           </div>
           
-          <div>
+          <div className="space-y-2">
             <h3 className={`text-2xl font-bold flex items-center justify-center md:justify-start gap-2 ${config.color}`}>
               <Icon className="h-6 w-6" />
               Action: {config.message}
@@ -84,7 +84,22 @@ const ResultCard = ({ result }) => {
             <p className="mt-2 text-text-muted text-lg leading-relaxed">
               {config.description}
             </p>
+            <p className="text-text-main">
+              <span className="font-semibold">Recommended Water:</span> {recommendedWater}L/m²
+            </p>
+            <p className="text-text-main">
+              <span className="font-semibold">Irrigation Frequency:</span> Every {frequencyDays} day{frequencyDays > 1 ? 's' : ''}
+            </p>
+            <p className="text-text-muted italic">{explanation}</p>
           </div>
+
+          <button
+            type="button"
+            onClick={onRepredict}
+            className="mt-4 px-5 py-2.5 rounded-xl font-semibold text-brand-dark bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+          >
+            Reprédire
+          </button>
         </div>
       </div>
     </div>

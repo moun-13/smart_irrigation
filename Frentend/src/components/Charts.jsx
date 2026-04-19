@@ -1,8 +1,8 @@
 import React from 'react';
 import { 
-  LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine 
+  LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, BarChart, Bar
 } from 'recharts';
-import { Activity, Droplets } from 'lucide-react';
+import { Activity, Droplets, CloudRain, Thermometer } from 'lucide-react';
 
 const Charts = ({ data }) => {
   return (
@@ -11,7 +11,7 @@ const Charts = ({ data }) => {
       <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-6">
           <Activity className="h-5 w-5 text-red-500" />
-          <h3 className="text-xl font-bold text-brand-dark">Water Stress Level (Last 7 Days)</h3>
+          <h3 className="text-xl font-bold text-brand-dark">Water Stress Level (Recent History)</h3>
         </div>
         
         <div className="h-72 w-full">
@@ -24,14 +24,14 @@ const Charts = ({ data }) => {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} dy={10} />
+              <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} dy={10} />
               <YAxis domain={[0, 100]} axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} />
               <Tooltip 
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 cursor={{ stroke: '#e5e7eb', strokeWidth: 1, strokeDasharray: '3 3' }}
               />
               <ReferenceLine y={70} label={{ position: 'top', value: 'High Stress (Irrigate)', fill: '#ef4444', fontSize: 12 }} stroke="#ef4444" strokeDasharray="3 3" />
-              <ReferenceLine y={40} label={{ position: 'insideBottomLeft', value: 'Optimal', fill: '#10b981', fontSize: 12 }} stroke="#10b981" strokeDasharray="3 3" />
+              <ReferenceLine y={40} label={{ position: 'insideBottomLeft', value: 'Medium', fill: '#f59e0b', fontSize: 12 }} stroke="#f59e0b" strokeDasharray="3 3" />
               <Area type="monotone" dataKey="stress" stroke="#ef4444" strokeWidth={3} fillOpacity={1} fill="url(#colorStress)" />
             </AreaChart>
           </ResponsiveContainer>
@@ -49,7 +49,7 @@ const Charts = ({ data }) => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} dy={10} />
+              <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} dy={10} />
               <YAxis domain={[0, 100]} axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} />
               <Tooltip 
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
@@ -57,6 +57,30 @@ const Charts = ({ data }) => {
               />
               <Line type="monotone" dataKey="moisture" stroke="#3498db" strokeWidth={3} dot={{ stroke: '#3498db', strokeWidth: 2, r: 4, fill: '#fff' }} activeDot={{ r: 6, fill: '#3498db' }} />
             </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-2">
+            <Thermometer className="h-5 w-5 text-orange-500" />
+            <h3 className="text-xl font-bold text-brand-dark">Temperature & Rainfall</h3>
+          </div>
+          <CloudRain className="h-5 w-5 text-brand-blue" />
+        </div>
+
+        <div className="h-72 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+              <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} dy={10} />
+              <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} />
+              <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{fill: '#9ca3af', fontSize: 12}} />
+              <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+              <Bar yAxisId="left" dataKey="rain" name="Rainfall (mm)" fill="#3498db" radius={[6, 6, 0, 0]} />
+              <Line yAxisId="right" type="monotone" dataKey="temp" name="Temperature (°C)" stroke="#f97316" strokeWidth={3} dot={{ r: 3 }} />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
