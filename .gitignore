@@ -1,0 +1,30 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# --- Node / Vite (in case of root tooling) ---
+node_modules/
+dist/
+dist-ssr/
+
+# --- Spark & Big Data ---
+.checkpoint/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# --- OS / Editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
